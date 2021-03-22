@@ -217,4 +217,63 @@ class TestClass {
         assertEquals(ag.getSum(), total);
     }
 
+    /***
+     * This tests that the ThreadSaver constructor functions as intended.
+     */
+    @Test
+    public void testThreadSaverConstructor(){
+        ThreadSaver threadSaver = new ThreadSaver(0, 0.25, "Quarter1", ag.generateArray(100));
+        assertEquals(0, threadSaver.getLower());
+        assertEquals(25, threadSaver.getUpper());
+        assertEquals("Quarter1", threadSaver.getName());
+        assertEquals(100,threadSaver.getIntArray().length);
+    }
+
+    /***
+     * This verifies that a thread can count an entire int[] array accurately.
+     */
+    @Test
+    public void testThreadSaverToCounterThread(){
+        // This thread will count from 0-100% of the provided array.
+        ThreadSaver threadSaver = new ThreadSaver(0, 1, "FullCount", ag.generateArray(100));
+        Thread ct = new Thread(new CounterThread(threadSaver));
+        ct.start();
+        try {
+            ct.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertEquals(ag.getSum(), threadSaver.getArraySum());
+    }
+
+    /***
+     * This is going to test that a double threading test is functional (not running in parallel).
+     */
+    @Test
+    public void testThreadSaverToCounterThread_DOUBLETHREAD(){
+        int[] array = ag.generateArray(100);
+        ThreadSaver threadSaverFirstHalf = new ThreadSaver(0, 0.5, "FullCount", array);
+        ThreadSaver threadSaverSecondHalf = new ThreadSaver(0.5, 1, "FullCount", array);
+
+        Thread ctFirstHalf = new Thread(new CounterThread(threadSaverFirstHalf));
+        Thread ctSecondHalf = new Thread(new CounterThread(threadSaverSecondHalf));
+
+        ctFirstHalf.start();
+        try {
+            ctFirstHalf.join();
+        } catch (InterruptedException ie){
+            ie.printStackTrace();
+        }
+
+        ctSecondHalf.start();
+        try {
+            ctSecondHalf.join();
+        } catch (InterruptedException ie){
+            ie.printStackTrace();
+        }
+        // the sum of the first half + the sum of the second half = should equal the total sum.
+        // System.out.println(ag.getSum() + " = " + threadSaverFirstHalf.getArraySum() + " + " + threadSaverSecondHalf.getArraySum());
+        assertEquals(ag.getSum(), threadSaverFirstHalf.getArraySum() + threadSaverSecondHalf.getArraySum());
+
+    }
 }

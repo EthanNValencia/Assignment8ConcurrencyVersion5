@@ -9,7 +9,9 @@ public class CounterThread implements Runnable{
         this.ts = ts;
     }
 
-
+    /***
+     * This is the run method for the CounterThread class. It will count through an array with the specified bounds.
+     */
     @Override
     public void run() {
         int[] array = ts.getIntArray();
@@ -17,8 +19,7 @@ public class CounterThread implements Runnable{
             for (int i = (int)ts.getLower(); i < ts.getUpper(); i++) {
                 ts.setArraySum(ts.getArraySum() + array[i]);
             }
-            System.out.println("sum: " + ts.getArraySum());
-
+            ts.setRunning(false);
             //threadControl.processControl(this);
         }
     }
