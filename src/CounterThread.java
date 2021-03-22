@@ -14,11 +14,13 @@ public class CounterThread implements Runnable{
      */
     @Override
     public void run() {
+        ts.setBegin(System.nanoTime()); // begin measuring time
         int[] array = ts.getIntArray();
         while(ts.getIsRunning() == true) {
             for (int i = (int)ts.getLower(); i < ts.getUpper(); i++) {
                 ts.setArraySum(ts.getArraySum() + array[i]);
             }
+            ts.setEnd(System.nanoTime()); // end measuring time
             ts.setRunning(false);
             //threadControl.processControl(this);
         }

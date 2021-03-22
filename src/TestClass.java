@@ -6,6 +6,21 @@ class TestClass {
 
     ThreadSaver ts = new ThreadSaver();
     ArrayGenerator ag = new ArrayGenerator();
+    SystemTimeProcessor stp = new SystemTimeProcessor();
+
+    /***
+     * This program really will not function correct if there are less than 4 cores, so it seems like a good test to perform first.
+     */
+    @Test
+    public void checkSystemCores(){
+        int cores = Runtime.getRuntime().availableProcessors();
+        System.out.println(cores);
+        if (cores >= 4){
+            assertTrue(true);
+        } else if (cores < 4) {
+            fail("This program will not run correctly on your PC. This program requires 4 CPU cores to run correctly. @Test checkSystemCores()");
+        }
+    }
 
     /***
      * Verifies that the ThreadSaver.getIsRunning method returns true (default setting).
@@ -202,20 +217,6 @@ class TestClass {
 
     }
 
-    /***
-     * Verifies that the ArrayGenerator.generateArray sum is calculated accurately even if the nSize is significant.
-     */
-    @Test
-    public void testGenerateArraySUM_STRESS(){
-        int total = 0;
-        int[] array = ag.generateArray(2000000); // lower this value to increase overall testing times.
-
-        for(int i =0; i < array.length; i++){
-            total = total + array[i];
-        }
-
-        assertEquals(ag.getSum(), total);
-    }
 
     /***
      * This tests that the ThreadSaver constructor functions as intended.
@@ -271,9 +272,133 @@ class TestClass {
         } catch (InterruptedException ie){
             ie.printStackTrace();
         }
+
         // the sum of the first half + the sum of the second half = should equal the total sum.
         // System.out.println(ag.getSum() + " = " + threadSaverFirstHalf.getArraySum() + " + " + threadSaverSecondHalf.getArraySum());
         assertEquals(ag.getSum(), threadSaverFirstHalf.getArraySum() + threadSaverSecondHalf.getArraySum());
+    }
 
+    /***
+     * This tests two CounterThreads running in parallel.
+     */
+    @Test
+    public void testTwoParallel(){
+        int[] array = ag.generateArray(100);
+        ThreadSaver threadSaverFirstHalf = new ThreadSaver(0, 0.5, "FullCount", array);
+        ThreadSaver threadSaverSecondHalf = new ThreadSaver(0.5, 1, "FullCount", array);
+
+        Thread ctFirstHalf = new Thread(new CounterThread(threadSaverFirstHalf));
+        Thread ctSecondHalf = new Thread(new CounterThread(threadSaverSecondHalf));
+        ctFirstHalf.start();
+        ctSecondHalf.start();
+
+        try {
+            Thread.sleep(1000); // 1 second should be enough time for the sub-threads to complete.
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertEquals(ag.getSum(), threadSaverFirstHalf.getArraySum() + threadSaverSecondHalf.getArraySum());
+    }
+
+    /***
+     * This tests four CounterThreads running in parallel.
+     */
+    @Test
+    public void testFourParallel(){
+        int[] array = ag.generateArray(100);
+        ThreadSaver threadSaverFirstQuart = new ThreadSaver(0, 0.25, "FullCount", array);
+        ThreadSaver threadSaverSecondQuart = new ThreadSaver(0.25, 0.5, "FullCount", array);
+        ThreadSaver threadSaverThirdQuart = new ThreadSaver(0.5, 0.75, "FullCount", array);
+        ThreadSaver threadSaverFourthQuart = new ThreadSaver(0.75, 1, "FullCount", array);
+
+        Thread ctFirstQuart = new Thread(new CounterThread(threadSaverFirstQuart));
+        Thread ctSecondQuart = new Thread(new CounterThread(threadSaverSecondQuart));
+        Thread ctThirdQuart = new Thread(new CounterThread(threadSaverThirdQuart));
+        Thread ctFourthQuart = new Thread(new CounterThread(threadSaverFourthQuart));
+        ctFirstQuart.start(); // start 1st quarter; (0%-25%)
+        ctSecondQuart.start(); // start 2nd quarter; (25%-50%)
+        ctThirdQuart.start(); // start 3rd quarter; (50%-75%)
+        ctFourthQuart.start(); // start 4th quarter; (75%-100%)
+
+        try {
+            Thread.sleep(1000); // 1 second should be enough time for the sub-threads to complete.
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertEquals(ag.getSum(), threadSaverFirstQuart.getArraySum() + threadSaverSecondQuart.getArraySum() + threadSaverThirdQuart.getArraySum() + threadSaverFourthQuart.getArraySum());
+    }
+
+    /***
+     * This verifies that the SystemTimeProcessing.calcAVG is functioning.
+     */
+    @Test
+    public void testCalcAVG(){
+        long[] array = {10,10,10,10,10}; // avg is 10
+        stp.calcAVG(array, 1);
+        assertEquals(10, stp.getAverageEnd());
+    }
+
+    /***
+     * Tests that the SystemTimeProcessor.testAverageRunTime method functions correctly.
+     */
+    @Test
+    public void testSetAverageRunTime(){
+        stp.setAverageRunTime(1000);
+        assertEquals(1000, stp.getAverageRunTime());
+    }
+
+    /***
+     * Need to test all the methods in SystemTimeProcessor
+     */
+
+
+    /***
+     * This tests that the SystemTimeProcess.calcTimeVariation method is functioning correctly.
+     */
+    @Test
+    public void testCalcTimeVariation(){
+        long[] begin = {10,10,10,10,12}; // 2 in variation
+        long[] end = {10,10,10,10,20}; // 10 in variation
+        stp.calcTimeVariationANDRuntime(begin, end);
+        assertEquals(2, stp.getBeginTimeVariation());
+        assertEquals(10, stp.getEndTimeVariation());
+    }
+
+    /***
+     * This test verifies that the averate runtime is calculated correctly.
+     */
+    @Test
+    public void testCalcAVGRuntime(){
+        long[] begin = {10,10,10,10,10};
+        long[] end = {12,12,12,12,12}; // avg runtime should be 2
+        stp.calcAVGRuntime(begin, end);
+        assertEquals(2, stp.getAverageRunTime());
+    }
+
+    /***
+     * This test will be used to develop a SystemTimeProcessor class that will take times
+     */
+    @Test
+    public void timeProcessingTest(){
+        ThreadSaver ts1 = new ThreadSaver();
+        ts1.setBegin(1000);
+        ts1.setEnd(2000);
+
+        ThreadSaver ts2 = new ThreadSaver();
+        ts2.setBegin(1000);
+        ts2.setEnd(2000);
+
+        ThreadSaver ts3 = new ThreadSaver();
+        ts3.setBegin(1000);
+        ts3.setEnd(2000);
+
+        ThreadSaver ts4 = new ThreadSaver();
+        ts4.setBegin(1000);
+        ts4.setEnd(2000);
+        SystemTimeProcessor stp = new SystemTimeProcessor(ts1, ts2, ts3, ts4);
+
+        assertEquals(1000, stp.getAverageBegin());
+        assertEquals(2000, stp.getAverageEnd());
+        assertEquals(1000, stp.getRunTime());
     }
 }
