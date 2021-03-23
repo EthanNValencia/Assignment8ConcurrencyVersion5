@@ -5,6 +5,10 @@ public class CounterThread implements Runnable{
 
     ThreadSaver ts;
 
+    /***
+     * This constructor method assigns the passed ThreadSaver to the CountThread class.
+     * @param ts Requires a ThreadSaver object to be assigned.
+     */
     public CounterThread(ThreadSaver ts) {
         this.ts = ts;
     }

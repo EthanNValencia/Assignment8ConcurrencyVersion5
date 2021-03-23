@@ -5,6 +5,13 @@ import java.util.Arrays;
  */
 public class SystemTimeProcessor {
 
+    private long averageBegin;
+    private long averageEnd;
+    private long averageRunTime;
+    private long beginTimeVariation;
+    private long endTimeVariation;
+    private long runTime;
+
     /***
      * This returns the average begin.
      * @return This is the average system time that were recorded by multiple threads.
@@ -47,49 +54,106 @@ public class SystemTimeProcessor {
 
     /***
      * Sets the averageRunTime variable. Useful for testing purposes.
-     * @param averageRunTime
+     * @param averageRunTime Requires a long that will be assigned.
      */
     public void setAverageRunTime(long averageRunTime) {
         this.averageRunTime = averageRunTime;
     }
 
+    /***
+     * Returns the beginTimeVariation variable.
+     * @return The long beginTimeVariation.
+     */
     public long getBeginTimeVariation() {
         return beginTimeVariation;
     }
 
+    /***
+     * Assigns the parameter to the beginTimeVariation variable. Good for testing.
+     * @param beginTimeVariation Requires a long data type.
+     */
     public void setBeginTimeVariation(long beginTimeVariation) {
         this.beginTimeVariation = beginTimeVariation;
     }
 
+    /***
+     * Returns the endTimeVariation variable.
+     * @return The long endTimeVariation.
+     */
     public long getEndTimeVariation() {
         return endTimeVariation;
     }
 
+    /***
+     * Assigns the parameter to the endTimeVariation variable. Good for testing.
+     * @param endTimeVariation Requires a long data type.
+     */
     public void setEndTimeVariation(long endTimeVariation) {
         this.endTimeVariation = endTimeVariation;
     }
 
+    /***
+     * Returns the runTime variable.
+     * @return The long runTime.
+     */
     public long getRunTime() {
         return runTime;
     }
 
+    /***
+     * Assigns the parameter to the runTime variable.
+     * @param runTime Requires a long data type.
+     */
     public void setRunTime(long runTime) {
         this.runTime = runTime;
     }
+    /***
+     * This is a SystemTimeProcessing constructor. It calculates useful runtimes information between 10 threads.
+     * @param ts0 Requires ThreadSaver0.
+     * @param ts1 Requires ThreadSaver1.
+     * @param ts2 Requires ThreadSaver2.
+     * @param ts3 Requires ThreadSaver3.
+     * @param ts4 Requires ThreadSaver4.
+     * @param ts5 Requires ThreadSaver5.
+     * @param ts6 Requires ThreadSaver6.
+     * @param ts7 Requires ThreadSaver7.
+     * @param ts8 Requires ThreadSaver8.
+     * @param ts9 Requires ThreadSaver9.
+     */
+    public SystemTimeProcessor(ThreadSaver ts0, ThreadSaver ts1, ThreadSaver ts2, ThreadSaver ts3, ThreadSaver ts4, ThreadSaver ts5, ThreadSaver ts6, ThreadSaver ts7, ThreadSaver ts8, ThreadSaver ts9){
+        long begin[] = {ts0.getBegin(),ts1.getBegin(),ts2.getBegin(),ts3.getBegin(), ts4.getBegin(), ts5.getBegin(), ts6.getBegin(), ts7.getBegin(), ts8.getBegin(), ts9.getBegin()};
+        long end[] = {ts0.getEnd(), ts1.getEnd(), ts2.getEnd(), ts3.getEnd(), ts4.getEnd(), ts5.getEnd(), ts6.getEnd(), ts7.getEnd(), ts8.getEnd(), ts9.getEnd()};
 
-    private long averageBegin;
-    private long averageEnd;
-    private long averageRunTime;
-    private long beginTimeVariation;
-    private long endTimeVariation;
-    private long runTime;
+        calcAVG(begin, 0);
+        calcAVG(end, 1);
+        calcAVGRuntime(begin, end);
+        calcTimeVariationANDRuntime(begin, end);
+    }
+
+    /***
+     * This is a SystemTimeProcessing constructor. It calculates useful runtimes information between 5 threads.
+     * @param ts0 Requires ThreadSaver0.
+     * @param ts1 Requires ThreadSaver1.
+     * @param ts2 Requires ThreadSaver2.
+     * @param ts3 Requires ThreadSaver3.
+     * @param ts4 Requires ThreadSaver4.
+     */
+    public SystemTimeProcessor(ThreadSaver ts0, ThreadSaver ts1, ThreadSaver ts2, ThreadSaver ts3, ThreadSaver ts4){
+        long begin[] = {ts0.getBegin(),ts1.getBegin(),ts2.getBegin(),ts3.getBegin(),ts4.getBegin()};
+        long end[] = {ts0.getEnd(), ts1.getEnd(), ts2.getEnd(), ts3.getEnd(),ts4.getEnd()};
+
+        calcAVG(begin, 0);
+        calcAVG(end, 1);
+        calcAVGRuntime(begin, end);
+        calcTimeVariationANDRuntime(begin, end);
+    }
 
     /***
      * This is a SystemTimeProcessing constructor. It calculates useful runtimes information between 4 threads.
-     * @param ts0 Requires ThreadSaver1.
-     * @param ts1 Requires ThreadSaver2.
-     * @param ts2 Requires ThreadSaver3.
-     * @param ts3 Requires ThreadSaver4.
+     * @param ts0 Requires ThreadSaver0.
+     * @param ts1 Requires ThreadSaver1.
+     * @param ts2 Requires ThreadSaver2.
+     * @param ts3 Requires ThreadSaver3.
      */
     public SystemTimeProcessor(ThreadSaver ts0, ThreadSaver ts1, ThreadSaver ts2, ThreadSaver ts3){
         long begin[] = {ts0.getBegin(),ts1.getBegin(),ts2.getBegin(),ts3.getBegin()};
@@ -103,9 +167,9 @@ public class SystemTimeProcessor {
 
     /***
      * This is a SystemTimeProcessing constructor. It calculates useful runtimes information between 3 threads.
-     * @param ts0 Requires ThreadSaver1.
-     * @param ts1 Requires ThreadSaver2.
-     * @param ts2 Requires ThreadSaver3.
+     * @param ts0 Requires ThreadSaver0.
+     * @param ts1 Requires ThreadSaver1.
+     * @param ts2 Requires ThreadSaver2.
      */
     public SystemTimeProcessor(ThreadSaver ts0, ThreadSaver ts1, ThreadSaver ts2){
         long begin[] = {ts0.getBegin(), ts1.getBegin(), ts2.getBegin()};
@@ -119,8 +183,8 @@ public class SystemTimeProcessor {
 
     /***
      * This is a SystemTimeProcessing constructor. It calculates useful runtimes information between 2 threads.
-     * @param ts0 Requires ThreadSaver1.
-     * @param ts1 Requires ThreadSaver2.
+     * @param ts0 Requires ThreadSaver0.
+     * @param ts1 Requires ThreadSaver1.
      */
     public SystemTimeProcessor(ThreadSaver ts0, ThreadSaver ts1){
         long begin[] = {ts0.getBegin(), ts1.getBegin()};
@@ -142,12 +206,20 @@ public class SystemTimeProcessor {
         calcTimes(begin, end);
     }
 
-    public void calcTimes(long begin, long end){
-        runTime = end - begin;
-    }
-
+    /***
+     * Default constructor for the SystemTimeProcessor class. This is useful for testing purposes.
+     */
     public SystemTimeProcessor(){
         // default constructor for testing purposes
+    }
+
+    /***
+     * This method is used to calculate the runtime of a single thread.
+     * @param begin Begin time, long data type.
+     * @param end End time, long data type.
+     */
+    public void calcTimes(long begin, long end){
+        runTime = end - begin;
     }
 
     /***

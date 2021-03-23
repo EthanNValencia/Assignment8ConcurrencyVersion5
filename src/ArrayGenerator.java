@@ -5,6 +5,8 @@ import java.util.Random;
  */
 public class ArrayGenerator {
 
+    private int sum = 0;
+
     /***
      * Returns the contents of the int sum.
      * @return Returns the contents of the int sum.
@@ -20,8 +22,6 @@ public class ArrayGenerator {
     public void setSum(int sum) {
         this.sum = sum;
     }
-
-    private int sum = 0;
 
     /***
      * This is a simple method that generates an nSize int[] array with contents that range from 1-10. In addition, it counts the content of the array and assigns the sum.

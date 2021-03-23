@@ -87,6 +87,40 @@ class TestClass {
     }
 
     /***
+     * Tests that the SystemTimeProcessor.setAverageBegin method works correctly.
+     */
+    @Test
+    public void testSetAverageBegin(){
+       stp.setAverageBegin(1000);
+       assertEquals(1000, stp.getAverageBegin());
+    }
+
+    /***
+     * Tests that the SystemTimeProcessor.getAverageBegin method works correctly.
+     */
+    @Test
+    public void testGetAverageBegin(){
+        assertEquals(0, stp.getAverageBegin());
+    }
+
+    /***
+     * Tests that the SystemTimeProcessor.setAverageEnd method works correctly.
+     */
+    @Test
+    public void testSetAverageEnd(){
+        stp.setAverageEnd(1000);
+        assertEquals(1000, stp.getAverageEnd());
+    }
+
+    /***
+     * Tests that the SystemTimeProcess.getAverageEnd method works correctly.
+     */
+    @Test
+    public void testGetAverageEnd(){
+        assertEquals(0, stp.getAverageEnd());
+    }
+
+    /***
      * Verifies that the ThreadSaver.getName method is working.
      */
     @Test
@@ -212,11 +246,8 @@ class TestClass {
         for(int i =0; i < array.length; i++){
             total = total + array[i];
         }
-
         assertEquals(ag.getSum(), total);
-
     }
-
 
     /***
      * This tests that the ThreadSaver constructor functions as intended.
@@ -228,6 +259,20 @@ class TestClass {
         assertEquals(25, threadSaver.getUpper());
         assertEquals("Quarter1", threadSaver.getName());
         assertEquals(100,threadSaver.getIntArray().length);
+    }
+
+    /***
+     * Tests that the CounterThread.CounterThread constructor is functioning correctly.
+     */
+    @Test
+    public void testCounterThread(){
+        int[] array = ag.generateArray(10);
+        ThreadSaver ts = new ThreadSaver(0, 1, "test", array);
+        CounterThread ct = new CounterThread(ts);
+        assertEquals(0, ct.ts.getLower());
+        assertEquals(10, ct.ts.getUpper()); // 100% of 10 is 10
+        assertEquals("test", ct.ts.getName());
+        assertEquals(array, ct.ts.getIntArray());
     }
 
     /***
@@ -279,7 +324,7 @@ class TestClass {
     }
 
     /***
-     * This tests two CounterThreads running in parallel.
+     * This tests two CounterThreads running in parallel and verifies that they are counting accurately.
      */
     @Test
     public void testTwoParallel(){
@@ -301,7 +346,7 @@ class TestClass {
     }
 
     /***
-     * This tests four CounterThreads running in parallel.
+     * This tests four CounterThreads running in parallel and counting correctly.
      */
     @Test
     public void testFourParallel(){
@@ -348,8 +393,63 @@ class TestClass {
     }
 
     /***
-     * Need to test all the methods in SystemTimeProcessor
+     * Tests that the SystemTimeProcessor.getAverageRunTime method is functioning correctly.
      */
+    @Test
+    public void testGetAverageRunTime(){
+        assertEquals(0, stp.getAverageRunTime());
+    }
+
+    /***
+     * Tests that the SystemTimeProcessor.getBeginTimeVariation method works correctly.
+     */
+    @Test
+    public void testGetBeginTimeVariation(){
+        assertEquals(0, stp.getBeginTimeVariation());
+    }
+
+    /***
+     * Tests that the SystemTimeProcessor.setBeginTimeVariation method functions correctly.
+     */
+    @Test
+    public void testSetBeginTimeVariation(){
+        stp.setBeginTimeVariation(10);
+        assertEquals(10, stp.getBeginTimeVariation());
+    }
+
+    /***
+     * Tests that the SystemTimeProcessor.getEndTimeVariation method functions correctly.
+     */
+    @Test
+    public void testGetEndTimeVariation(){
+        assertEquals(0, stp.getEndTimeVariation());
+    }
+
+    /***
+     * Tests that the SystemTimeProcessor.setEndTimeVariation method functions correctly.
+     */
+    @Test
+    public void testSetEndTimeVariation(){
+        stp.setEndTimeVariation(1000);
+        assertEquals(1000, stp.getEndTimeVariation());
+    }
+
+    /***
+     * Tests that the SystemTimeProcessor.getRunTime method functions correctly.
+     */
+    @Test
+    public void testGetRunTime(){
+        assertEquals(0, stp.getRunTime());
+    }
+
+    /***
+     * Tests that the SystemTimeProcessor.setRunTime method functions correctly.
+     */
+    @Test
+    public void testSetRunTime(){
+        stp.setRunTime(5000);
+        assertEquals(5000, stp.getRunTime());
+    }
 
 
     /***
@@ -401,4 +501,5 @@ class TestClass {
         assertEquals(2000, stp.getAverageEnd());
         assertEquals(1000, stp.getRunTime());
     }
+
 }
