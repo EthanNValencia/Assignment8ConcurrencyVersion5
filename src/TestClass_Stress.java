@@ -1,5 +1,9 @@
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestClass_Stress {
@@ -381,7 +385,7 @@ public class TestClass_Stress {
      * I wrote the ThreadSpinner class thinking it might have better controllability, but the performance is really bad. NOTE: If close all non-essential programs running on my PC, the speed noticeably improves.
      */
     @Test
-    public void testThreadSpinner() {
+    public void testThreadSpinners() {
         long ten_SUM = 0;
         long quad_SUM = 0;
         long single_SUM = 0;
@@ -492,4 +496,237 @@ public class TestClass_Stress {
         assertEquals(quad_SUM, single_SUM);
     }
 
+    /***
+     * This isn't really a test... rather I didn't want to have to write all the code for the fifty thread test. I decided it would be better for me to write code that generates code that I can copy and paste.
+     */
+    @Test
+    public void generateJava(){
+        double one = 0;
+        double two = 0.02;
+        for(int i = 1; i < 51; i ++){
+            System.out.println("ThreadSaver ts" + i + " = new ThreadSaver(" + one + "," + two + ", \"t\", array);");
+            one = one + 0.02;
+            two = two + 0.02;
+            BigDecimal bd_one = new BigDecimal(one).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal bd_two = new BigDecimal(two).setScale(2, RoundingMode.HALF_UP);
+            one = bd_one.doubleValue();
+            two = bd_two.doubleValue();
+            System.out.println("Thread t" + i + " = new Thread(new CounterThread(ts" + i + "));");
+            System.out.println("t" + i +".start();");
+        }
+
+        String str1 = "";
+        int log = 0;
+        for(int a = 1; a < 6; a ++){
+            str1 = "SystemTimeProcessor stp" + a + "= new SystemTimeProcessor(";
+            for(int j = 1; j < 11; j++) {
+                str1 = str1.concat("ts" + (j+log) + ", ");
+            }
+            log = log + 10;
+            System.out.println(str1 + ");");
+        }
+        str1 = "fifty_SUM = ";
+        for(int i = 1; i < 51; i++){
+            str1 = str1.concat("ts" + i + ".getArraySum()+");
+        }
+        System.out.println(str1 + ";");
+
+    }
+
+    /***
+     * I am going to test how well 50 threads will run.
+     */
+    @Test
+    public void test50Threads() {
+        long single_SUM = 0;
+        long fifty_SUM = 0;
+        ArrayGenerator ag = new ArrayGenerator();
+        int[] array = ag.generateArray(200000000);
+
+        for(int i = 0; i < 5; i++) {
+
+            ThreadSaver ts1_single = new ThreadSaver(0, 1, "t", array);
+            Thread tot = new Thread(new CounterThread(ts1_single));
+            tot.start();
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            SystemTimeProcessor stp_single = new SystemTimeProcessor(ts1_single);
+            single_SUM = ts1_single.getArraySum();
+            System.out.println("Single-Thread runtime: " + stp_single.getRunTime() + " Sum: " + single_SUM);
+        }
+
+        for (int i = 0; i < 5; i++) {
+            ThreadSaver ts1 = new ThreadSaver(0.0,0.02, "t", array);
+            Thread t1 = new Thread(new CounterThread(ts1));
+            t1.start();
+            ThreadSaver ts2 = new ThreadSaver(0.02,0.04, "t", array);
+            Thread t2 = new Thread(new CounterThread(ts2));
+            t2.start();
+            ThreadSaver ts3 = new ThreadSaver(0.04,0.06, "t", array);
+            Thread t3 = new Thread(new CounterThread(ts3));
+            t3.start();
+            ThreadSaver ts4 = new ThreadSaver(0.06,0.08, "t", array);
+            Thread t4 = new Thread(new CounterThread(ts4));
+            t4.start();
+            ThreadSaver ts5 = new ThreadSaver(0.08,0.1, "t", array);
+            Thread t5 = new Thread(new CounterThread(ts5));
+            t5.start();
+            ThreadSaver ts6 = new ThreadSaver(0.1,0.12, "t", array);
+            Thread t6 = new Thread(new CounterThread(ts6));
+            t6.start();
+            ThreadSaver ts7 = new ThreadSaver(0.12,0.14, "t", array);
+            Thread t7 = new Thread(new CounterThread(ts7));
+            t7.start();
+            ThreadSaver ts8 = new ThreadSaver(0.14,0.16, "t", array);
+            Thread t8 = new Thread(new CounterThread(ts8));
+            t8.start();
+            ThreadSaver ts9 = new ThreadSaver(0.16,0.18, "t", array);
+            Thread t9 = new Thread(new CounterThread(ts9));
+            t9.start();
+            ThreadSaver ts10 = new ThreadSaver(0.18,0.2, "t", array);
+            Thread t10 = new Thread(new CounterThread(ts10));
+            t10.start();
+            ThreadSaver ts11 = new ThreadSaver(0.2,0.22, "t", array);
+            Thread t11 = new Thread(new CounterThread(ts11));
+            t11.start();
+            ThreadSaver ts12 = new ThreadSaver(0.22,0.24, "t", array);
+            Thread t12 = new Thread(new CounterThread(ts12));
+            t12.start();
+            ThreadSaver ts13 = new ThreadSaver(0.24,0.26, "t", array);
+            Thread t13 = new Thread(new CounterThread(ts13));
+            t13.start();
+            ThreadSaver ts14 = new ThreadSaver(0.26,0.28, "t", array);
+            Thread t14 = new Thread(new CounterThread(ts14));
+            t14.start();
+            ThreadSaver ts15 = new ThreadSaver(0.28,0.3, "t", array);
+            Thread t15 = new Thread(new CounterThread(ts15));
+            t15.start();
+            ThreadSaver ts16 = new ThreadSaver(0.3,0.32, "t", array);
+            Thread t16 = new Thread(new CounterThread(ts16));
+            t16.start();
+            ThreadSaver ts17 = new ThreadSaver(0.32,0.34, "t", array);
+            Thread t17 = new Thread(new CounterThread(ts17));
+            t17.start();
+            ThreadSaver ts18 = new ThreadSaver(0.34,0.36, "t", array);
+            Thread t18 = new Thread(new CounterThread(ts18));
+            t18.start();
+            ThreadSaver ts19 = new ThreadSaver(0.36,0.38, "t", array);
+            Thread t19 = new Thread(new CounterThread(ts19));
+            t19.start();
+            ThreadSaver ts20 = new ThreadSaver(0.38,0.4, "t", array);
+            Thread t20 = new Thread(new CounterThread(ts20));
+            t20.start();
+            ThreadSaver ts21 = new ThreadSaver(0.4,0.42, "t", array);
+            Thread t21 = new Thread(new CounterThread(ts21));
+            t21.start();
+            ThreadSaver ts22 = new ThreadSaver(0.42,0.44, "t", array);
+            Thread t22 = new Thread(new CounterThread(ts22));
+            t22.start();
+            ThreadSaver ts23 = new ThreadSaver(0.44,0.46, "t", array);
+            Thread t23 = new Thread(new CounterThread(ts23));
+            t23.start();
+            ThreadSaver ts24 = new ThreadSaver(0.46,0.48, "t", array);
+            Thread t24 = new Thread(new CounterThread(ts24));
+            t24.start();
+            ThreadSaver ts25 = new ThreadSaver(0.48,0.5, "t", array);
+            Thread t25 = new Thread(new CounterThread(ts25));
+            t25.start();
+            ThreadSaver ts26 = new ThreadSaver(0.5,0.52, "t", array);
+            Thread t26 = new Thread(new CounterThread(ts26));
+            t26.start();
+            ThreadSaver ts27 = new ThreadSaver(0.52,0.54, "t", array);
+            Thread t27 = new Thread(new CounterThread(ts27));
+            t27.start();
+            ThreadSaver ts28 = new ThreadSaver(0.54,0.56, "t", array);
+            Thread t28 = new Thread(new CounterThread(ts28));
+            t28.start();
+            ThreadSaver ts29 = new ThreadSaver(0.56,0.58, "t", array);
+            Thread t29 = new Thread(new CounterThread(ts29));
+            t29.start();
+            ThreadSaver ts30 = new ThreadSaver(0.58,0.6, "t", array);
+            Thread t30 = new Thread(new CounterThread(ts30));
+            t30.start();
+            ThreadSaver ts31 = new ThreadSaver(0.6,0.62, "t", array);
+            Thread t31 = new Thread(new CounterThread(ts31));
+            t31.start();
+            ThreadSaver ts32 = new ThreadSaver(0.62,0.64, "t", array);
+            Thread t32 = new Thread(new CounterThread(ts32));
+            t32.start();
+            ThreadSaver ts33 = new ThreadSaver(0.64,0.66, "t", array);
+            Thread t33 = new Thread(new CounterThread(ts33));
+            t33.start();
+            ThreadSaver ts34 = new ThreadSaver(0.66,0.68, "t", array);
+            Thread t34 = new Thread(new CounterThread(ts34));
+            t34.start();
+            ThreadSaver ts35 = new ThreadSaver(0.68,0.7, "t", array);
+            Thread t35 = new Thread(new CounterThread(ts35));
+            t35.start();
+            ThreadSaver ts36 = new ThreadSaver(0.7,0.72, "t", array);
+            Thread t36 = new Thread(new CounterThread(ts36));
+            t36.start();
+            ThreadSaver ts37 = new ThreadSaver(0.72,0.74, "t", array);
+            Thread t37 = new Thread(new CounterThread(ts37));
+            t37.start();
+            ThreadSaver ts38 = new ThreadSaver(0.74,0.76, "t", array);
+            Thread t38 = new Thread(new CounterThread(ts38));
+            t38.start();
+            ThreadSaver ts39 = new ThreadSaver(0.76,0.78, "t", array);
+            Thread t39 = new Thread(new CounterThread(ts39));
+            t39.start();
+            ThreadSaver ts40 = new ThreadSaver(0.78,0.8, "t", array);
+            Thread t40 = new Thread(new CounterThread(ts40));
+            t40.start();
+            ThreadSaver ts41 = new ThreadSaver(0.8,0.82, "t", array);
+            Thread t41 = new Thread(new CounterThread(ts41));
+            t41.start();
+            ThreadSaver ts42 = new ThreadSaver(0.82,0.84, "t", array);
+            Thread t42 = new Thread(new CounterThread(ts42));
+            t42.start();
+            ThreadSaver ts43 = new ThreadSaver(0.84,0.86, "t", array);
+            Thread t43 = new Thread(new CounterThread(ts43));
+            t43.start();
+            ThreadSaver ts44 = new ThreadSaver(0.86,0.88, "t", array);
+            Thread t44 = new Thread(new CounterThread(ts44));
+            t44.start();
+            ThreadSaver ts45 = new ThreadSaver(0.88,0.9, "t", array);
+            Thread t45 = new Thread(new CounterThread(ts45));
+            t45.start();
+            ThreadSaver ts46 = new ThreadSaver(0.9,0.92, "t", array);
+            Thread t46 = new Thread(new CounterThread(ts46));
+            t46.start();
+            ThreadSaver ts47 = new ThreadSaver(0.92,0.94, "t", array);
+            Thread t47 = new Thread(new CounterThread(ts47));
+            t47.start();
+            ThreadSaver ts48 = new ThreadSaver(0.94,0.96, "t", array);
+            Thread t48 = new Thread(new CounterThread(ts48));
+            t48.start();
+            ThreadSaver ts49 = new ThreadSaver(0.96,0.98, "t", array);
+            Thread t49 = new Thread(new CounterThread(ts49));
+            t49.start();
+            ThreadSaver ts50 = new ThreadSaver(0.98,1.0, "t", array);
+            Thread t50 = new Thread(new CounterThread(ts50));
+            t50.start();
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            SystemTimeProcessor stp1= new SystemTimeProcessor(ts1, ts2, ts3, ts4, ts5, ts6, ts7, ts8, ts9, ts10);
+            SystemTimeProcessor stp2= new SystemTimeProcessor(ts11, ts12, ts13, ts14, ts15, ts16, ts17, ts18, ts19, ts20);
+            SystemTimeProcessor stp3= new SystemTimeProcessor(ts21, ts22, ts23, ts24, ts25, ts26, ts27, ts28, ts29, ts30);
+            SystemTimeProcessor stp4= new SystemTimeProcessor(ts31, ts32, ts33, ts34, ts35, ts36, ts37, ts38, ts39, ts40);
+            SystemTimeProcessor stp5= new SystemTimeProcessor(ts41, ts42, ts43, ts44, ts45, ts46, ts47, ts48, ts49, ts50);
+
+            fifty_SUM = ts1.getArraySum()+ts2.getArraySum()+ts3.getArraySum()+ts4.getArraySum()+ts5.getArraySum()+ts6.getArraySum()+ts7.getArraySum()+ts8.getArraySum()+ts9.getArraySum()+ts10.getArraySum()+ts11.getArraySum()+ts12.getArraySum()+ts13.getArraySum()+ts14.getArraySum()+ts15.getArraySum()+ts16.getArraySum()+ts17.getArraySum()+ts18.getArraySum()+ts19.getArraySum()+ts20.getArraySum()+ts21.getArraySum()+ts22.getArraySum()+ts23.getArraySum()+ts24.getArraySum()+ts25.getArraySum()+ts26.getArraySum()+ts27.getArraySum()+ts28.getArraySum()+ts29.getArraySum()+ts30.getArraySum()+ts31.getArraySum()+ts32.getArraySum()+ts33.getArraySum()+ts34.getArraySum()+ts35.getArraySum()+ts36.getArraySum()+ts37.getArraySum()+ts38.getArraySum()+ts39.getArraySum()+ts40.getArraySum()+ts41.getArraySum()+ts42.getArraySum()+ts43.getArraySum()+ts44.getArraySum()+ts45.getArraySum()+ts46.getArraySum()+ts47.getArraySum()+ts48.getArraySum()+ts49.getArraySum()+ts50.getArraySum();
+            System.out.println(" Fifty-Thread runtime: " + (stp1.getRunTime()+stp2.getRunTime()+stp3.getRunTime()+stp4.getRunTime()+stp5.getRunTime()) + " Sum: " + fifty_SUM);
+        }
+
+    }
 }
