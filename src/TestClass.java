@@ -2,6 +2,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+/***
+ * This is the testing class for this program. All of these tests should pass and in a timely manner.
+ */
 class TestClass {
 
     ThreadSaver ts = new ThreadSaver();

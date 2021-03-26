@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /***
- * This is a class that contains various stressful tests. These tests work on my personal computer, but it is difficult to say how they function on a different computer. Each test takes around 1 minute to run. To complete all the stress tests will take time and they do put a lot of pressure on the CPU.
+ * This is a class that contains various stressful tests. These tests work on my personal computer, but it is difficult to say how they function on a different computer. Each test takes around 1 minute to run. To complete all the stress tests will take time and they do put a lot of pressure on the CPU. I would think that these tests will pass on any CPU. If the tests are failing, then it is likely that a different application is competing with the IDE.
  */
 public class TestClass_Stress {
 
@@ -30,7 +30,7 @@ public class TestClass_Stress {
      * This test outputs the times it takes for the system to perform
      */
     @Test
-    public void testRuntime4ParallelThreadsANDSingleThread_STRESS(){
+    public void testRuntime_STRESS(){
         int[] array = ag.generateArray(200000000); // This is what takes the most time.
         ThreadSaver threadSaverFirstQuart = new ThreadSaver(0, 0.25, "q1", array);
         ThreadSaver threadSaverSecondQuart = new ThreadSaver(0.25, 0.5, "q2", array);
@@ -78,10 +78,10 @@ public class TestClass_Stress {
     }
 
     /***
-     * This is a stress test that runs single, double, triple, quad, five, single, twenty threads in loops and verifies the accuracy of their counts. This test can take over 1 minute to run.
+     * This is a stress test that runs single, double, triple, quad, five, ten, twenty threads in loops and verifies the accuracy of their counts. This test can take over 1 minute to run.
      */
     @Test
-    public void test1234_STRESS(){
+    public void test123451020_STRESS(){
         long single_SUM = 0;
         long double_SUM = 0;
         long triple_SUM = 0;
@@ -394,7 +394,7 @@ public class TestClass_Stress {
      * I wrote the ThreadSpinner class thinking it might have better controllability, but the performance is really bad. NOTE: If close all non-essential programs running on my PC, the speed noticeably improves.
      */
     @Test
-    public void testThreadSpinners() {
+    public void testThreadSpinners_STRESS() {
         long ten_SUM = 0;
         long quad_SUM = 0;
         long single_SUM = 0;
@@ -551,10 +551,10 @@ public class TestClass_Stress {
     }
 
     /***
-     * I am going to test how well 50 threads will run.
+     * I am going to test how well 50 threads will run. It runs a single thread first to offer a baseline comparison.
      */
     @Test
-    public void test50Threads() {
+    public void test50Threads_STRESS() {
         long single_SUM = 0;
         long fifty_SUM = 0;
         ArrayGenerator ag = new ArrayGenerator();
@@ -749,7 +749,7 @@ public class TestClass_Stress {
     }
 
     /***
-     * Tests the accuracy of the threadSpinner under stressful conditions.
+     * Tests the accuracy of the ThreadSpinner under stressful conditions.
      */
     @Test
     public void threadSpinner_STRESS(){
