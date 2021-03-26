@@ -27,8 +27,8 @@ public class ThreadSaver {
 
     /***
      * Constructor for a ThreadSaver object.
-     * @param lower Lower bound of the range, between 0-1 & less than Upper.
-     * @param upper Upper bound of the range, between 0-1 & greater than Lower.
+     * @param lower Lower bound of the range, between 0-1 and less than Upper.
+     * @param upper Upper bound of the range, between 0-1 and greater than Lower.
      * @param name Name of the ThreadSaver, for example: "Quarter1".
      * @param intArray It requires the array.
      */
@@ -42,7 +42,7 @@ public class ThreadSaver {
 
     /***
      * This method returns the value of the isRunning boolean.
-     * @return
+     * @return This returns a boolean value of whether or not the thread is still running.
      */
     public boolean getIsRunning() {
         return isRunning;
