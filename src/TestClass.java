@@ -9,16 +9,15 @@ class TestClass {
     SystemTimeProcessor stp = new SystemTimeProcessor();
 
     /***
-     * This program really will not function correct if there are less than 4 cores, so it seems like a good test to perform first.
+     * This is a test that checks that the system that is running this program has at least one core. This might be a silly test.
      */
     @Test
     public void checkSystemCores(){
         int cores = Runtime.getRuntime().availableProcessors();
-        System.out.println(cores);
-        if (cores >= 4){
+        if (cores >= 1){
             assertTrue(true);
-        } else if (cores < 4) {
-            fail("This program will not run correctly on your PC. This program requires 4 CPU cores to run correctly. @Test checkSystemCores()");
+        } else if (cores < 1) {
+            fail("This program will not run correctly on your PC. This program requires a processor to run correctly. @Test checkSystemCores()");
         }
     }
 
@@ -501,5 +500,63 @@ class TestClass {
         assertEquals(2000, stp.getAverageEnd());
         assertEquals(1000, stp.getRunTime());
     }
+
+    /***
+     * Tests that the ThreadSpinner constructor that takes one thread object is functioning.
+     */
+    @Test
+    public void testThreadSpinner1(){
+        ThreadSaver ts = new ThreadSaver();
+        Thread thread = new Thread(new CounterThread(ts));
+        ThreadSpinner threadSpin = new ThreadSpinner(thread);
+        assertEquals("Size:1", threadSpin.toString());
+    }
+
+    /***
+     * Tests that the ThreadSpinner constructor that takes two thread objects is functioning.
+     */
+    @Test
+    public void testThreadSpinner2(){
+        ThreadSpinner threadSpin = new ThreadSpinner(new Thread(), new Thread());
+        assertEquals("Size:2", threadSpin.toString());
+    }
+
+    /***
+     * Tests that the ThreadSpinner constructor that takes three thread objects is functioning.
+     */
+    @Test
+    public void testThreadSpinner3(){
+        ThreadSpinner threadSpin = new ThreadSpinner(new Thread(), new Thread(), new Thread());
+        assertEquals("Size:3", threadSpin.toString());
+    }
+
+    /***
+     * Tests that the ThreadSpinner constructor that takes four thread objects is functioning.
+     */
+    @Test
+    public void testThreadSpinner4(){
+        ThreadSpinner threadSpin = new ThreadSpinner(new Thread(), new Thread(), new Thread(), new Thread());
+        assertEquals("Size:4", threadSpin.toString());
+    }
+
+    /***
+     * Tests that the ThreadSpinner constructor that takes five thread objects is functioning.
+     */
+    @Test
+    public void testThreadSpinner5(){
+        ThreadSpinner threadSpin = new ThreadSpinner(new Thread(), new Thread(), new Thread(), new Thread(), new Thread());
+        assertEquals("Size:5", threadSpin.toString());
+    }
+
+    /***
+     * Tests that the ThreadSpinner constructor that takes ten thread objects is functioning.
+     */
+    @Test
+    public void testThreadSpinner10(){
+        ThreadSpinner threadSpin = new ThreadSpinner(new Thread(), new Thread(), new Thread(), new Thread(), new Thread(), new Thread(), new Thread(), new Thread(), new Thread(), new Thread());
+        assertEquals("Size:10", threadSpin.toString());
+    }
+
+
 
 }
