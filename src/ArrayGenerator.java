@@ -1,3 +1,11 @@
+/*
+File: ArrayGenerator.java
+Author: Ethan J. Nephew
+Date due: March 28, 2021
+Course: CEN-3024C
+Description: This class contains the necessary method for generating an int[] array of a specified size. All contents off the array will be between 1-10.
+*/
+
 import java.util.Random;
 
 /***
@@ -25,8 +33,8 @@ public class ArrayGenerator {
 
     /***
      * This is a simple method that generates an nSize int[] array with contents that range from 1-10. In addition, it counts the content of the array and assigns the sum.
-     * @param nSize
-     * @return
+     * @param nSize This is the specified size of the array.
+     * @return The method will return the fully generated array.
      */
     public int[] generateArray(int nSize){
         int list[] = new int[nSize];

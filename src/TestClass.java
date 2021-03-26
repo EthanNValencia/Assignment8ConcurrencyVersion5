@@ -1,7 +1,13 @@
+/*
+File: TestClass.java
+Author: Ethan J. Nephew
+Date due: March 28, 2021
+Course: CEN-3024C
+Description: The TestClass.java contains all of the vital tests that must pass for the program to operate correctly.
+*/
+
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 
 /***
  * This is the testing class for this program. All of these tests should pass and in a timely manner.

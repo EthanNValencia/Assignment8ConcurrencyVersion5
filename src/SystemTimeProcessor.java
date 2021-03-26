@@ -1,3 +1,11 @@
+/*
+File: SystemTimeProcessor.java
+Author: Ethan J. Nephew
+Date due: March 28, 2021
+Course: CEN-3024C
+Description: This is a class that I wrote to help verify that the threads are operating correct. Ultimately, many of the methods in this class are not used in the main method.
+*/
+
 import java.util.Arrays;
 
 /***

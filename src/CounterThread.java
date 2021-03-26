@@ -1,3 +1,11 @@
+/*
+File: CounterThread.java
+Author: Ethan J. Nephew
+Date due: March 28, 2021
+Course: CEN-3024C
+Description: This class is a Runnable and can iteratively count the contents of an int[] array. This class requires a ThreadSaver object to function properly.
+*/
+
 /***
  * A class that implements the runnable interface. This class is used to count the contents of an int[] array.
  */
@@ -26,7 +34,6 @@ public class CounterThread implements Runnable{
             }
             ts.setEnd(System.nanoTime()); // end measuring time
             ts.setRunning(false);
-            //threadControl.processControl(this);
         }
     }
 }

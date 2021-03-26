@@ -1,3 +1,12 @@
+/*
+File: Main.java
+Author: Ethan J. Nephew
+Date due: March 28, 2021
+Course: CEN-3024C
+Description: Main method.
+*/
+
+
 /***
  * This is the main thread class.
  */
@@ -5,7 +14,7 @@ public class Main {
 
     /***
      * Main application thread. The main thread starts other threads that start more threads. I recommend to run the TestClass.java first to verify that the program will operate correctly on the accessing PC.
-     * @param args
+     * @param args An array of command line arguments.
      */
     public static void main(String[] args){
         ArrayGenerator ag = new ArrayGenerator();
